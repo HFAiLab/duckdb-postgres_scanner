@@ -130,10 +130,14 @@ LogicalType PostgresUtils::TypeToLogicalType(optional_ptr<PostgresTransaction> t
 	} else if (pgtypename == "numeric") {
 		auto width = ((type_info.type_modifier - sizeof(int32_t)) >> 16) & 0xffff;
 		auto scale = (((type_info.type_modifier - sizeof(int32_t)) & 0x7ff) ^ 1024) - 1024;
-		if (type_info.type_modifier == -1 || width < 0 || scale < 0 || width > 38) {
+		if (type_info.type_modifier == -1 || width < 0 || scale < 0) {
 			// fallback to double
 			postgres_type.info = PostgresTypeAnnotation::NUMERIC_AS_DOUBLE;
 			return LogicalType::DOUBLE;
+		}
+		if (width > 38) {
+			postgres_type.info = PostgresTypeAnnotation::NUMERIC_TRUNCATE;
+			return LogicalType::DECIMAL(38, scale);
 		}
 		return LogicalType::DECIMAL(width, scale);
 	} else if (pgtypename == "char" || pgtypename == "bpchar") {
