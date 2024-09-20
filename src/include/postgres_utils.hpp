@@ -35,7 +35,8 @@ enum class PostgresTypeAnnotation {
 	GEOM_BOX,
 	GEOM_PATH,
 	GEOM_POLYGON,
-	GEOM_CIRCLE
+	GEOM_CIRCLE,
+	NUMERIC_TRUNCATE,
 };
 
 struct PostgresType {
