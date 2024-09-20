@@ -58,17 +58,17 @@ clean:
 debug:
 	mkdir -p  build/debug && \
 	cmake $(GENERATOR) $(BUILD_FLAGS) -DCMAKE_BUILD_TYPE=Debug -S ./duckdb/ -B build/debug && \
-	cmake --build build/debug --config Debug
+	cmake --build build/debug --config Debug -j
 
 reldebug:
 	mkdir -p build/reldebug && \
 	cmake $(GENERATOR) $(BUILD_FLAGS) -DCMAKE_BUILD_TYPE=RelWithDebInfo -S ./duckdb/ -B build/reldebug && \
-	cmake --build build/reldebug --config RelWithDebInfo
+	cmake --build build/reldebug --config RelWithDebInfo -j
 
 release:
 	mkdir -p build/release && \
 	cmake $(GENERATOR) $(BUILD_FLAGS) -DCMAKE_BUILD_TYPE=Release -S ./duckdb/ -B build/release && \
-	cmake --build build/release --config Release
+	cmake --build build/release --config Release -j
 
 test: test_release
 test_release: release
